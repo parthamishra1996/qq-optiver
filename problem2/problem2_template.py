@@ -146,9 +146,44 @@ class MyTradingFunctions():
             # This is a way to access the feature df's for every stock
             ask_ma_5 = lookbackInstrumentFeatures.getFeatureDf('ask_ma_5')[stockId]
             bid_ma_5 = lookbackInstrumentFeatures.getFeatureDf('bid_ma_5')[stockId]
-
+            ask_ma_10 = lookbackInstrumentFeatures.getFeatureDf('ask_ma_10')[stockId]
+            bid_ma_10 = lookbackInstrumentFeatures.getFeatureDf('bid_ma_10')[stockId]
+            ask_mom_5 = lookbackInstrumentFeatures.getFeatureDf('ask_mom_5')[stockId]
+            bid_mom_5 = lookbackInstrumentFeatures.getFeatureDf('bid_mom_5')[stockId]
             # In this simple case, we are just joining the market at current bid and ask price.
-            marketSeries[stockId] = (bidPrice.iloc[-1], askPrice.iloc[-1])
+            #if stockId in ['DFY']:
+            print "start"
+            print stockId
+            #print type(bid_ma_5)
+            print "end"
+            '''
+            #Successful Strategy3: accuracy0.46 
+            ma_5 = bid_ma_5.mean() + ask_ma_5.mean()
+            ma_10 = bid_ma_10.mean() + ask_ma_10.mean()
+            if ma_5 >= ma_10:
+            	bid_new = bid_ma_10.mean()*0.95
+            	ask_new = ask_ma_5.mean()*1.05
+            else:
+				bid_new = bid_ma_5[0]*0.95
+				ask_new = ask_ma_10[0]*1.05
+            '''
+            
+            #Successful Strategy1: Trade accuracy: 0.46 everything else -ve
+            bid_new = min(bid_ma_5[0], bid_ma_10[0])
+            ask_new = max(ask_ma_5[0], ask_ma_10[0])
+            
+            '''
+            #Successful Strategy2
+            bid_new = min(bid_ma_5.min(), bid_ma_10[0].min())
+            ask_new = max(ask_ma_5[0].max(), ask_ma_10[0].max())
+            '''
+            #else:
+	        #    bid_new = bidPrice.iloc[-1] #+ bid_mom_5*bidPrice.iloc[len(bidPrice)-2]
+	        #    ask_new = askPrice.iloc[-1] #+ ask_mom_5*askPrice.iloc[len(askPrice)-2]
+            #bid_new = bid_ma_5
+            #ask_new = ask_ma_5
+            
+            marketSeries[stockId] = (bid_new, ask_new)
         
         return marketSeries
 

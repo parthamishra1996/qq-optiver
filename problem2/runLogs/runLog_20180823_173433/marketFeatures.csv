@@ -1,0 +1,2 @@
+time,score,pnl,capital,portfolio_value,variance,capitalUsage,maxDrawdown,total_profit,total_loss,count_profit,count_loss
+2012-02-07 09:30:00,0.0,0.0,14000000,14000000.0,0,0,"{'maxPortfolioValue': 0, 'maxDrawdown': 0}",0,0,0,0
